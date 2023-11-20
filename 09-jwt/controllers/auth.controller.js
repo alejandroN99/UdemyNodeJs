@@ -9,6 +9,7 @@ const login = async (req = request, res = response) =>{
         const { correo, password} = req.body;
     
         const user = await User.findOne({correo});
+        console.log(user)
         
         //Existe correo
         if(!user){
@@ -34,7 +35,7 @@ const login = async (req = request, res = response) =>{
 
         //JWT
 
-        const token = await generarToken(user.uid);
+        const token = await generarToken(user._id);
 
         res.status(200).json({
             user,
