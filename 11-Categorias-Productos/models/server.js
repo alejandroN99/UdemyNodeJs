@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require("express-fileupload");
 
 require('dotenv').config();
 
@@ -18,6 +19,7 @@ class Server {
             authPath  :     '/api/auth',
             productoPath :  '/api/producto',
             buscarPath :    '/api/buscar',
+            uploadPath :    '/api/upload',
         }
         
 
@@ -33,6 +35,23 @@ class Server {
         await dbConnect();
     }
 
+    middlewares(){
+        //CORS
+        this.app.use( cors());
+
+        //Lectura y parseo del body
+        this.app.use( express.json());
+
+        //Contenido estatico
+        this.app.use( express.static('public'));
+
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath : true
+        }));
+
+    }
     listen(){
         this.app.listen(this.port, () => {
             console.log('App listening in port:'+ this.port)
@@ -45,19 +64,9 @@ class Server {
         this.app.use(this.paths.usersPath ,require("../routes/user.routes"));
         this.app.use(this.paths.productoPath ,require("../routes/productos.routes"));
         this.app.use(this.paths.buscarPath ,require("../routes/buscar.routes"));
+        this.app.use(this.paths.uploadPath ,require("../routes/upload.routes"));
     }
 
-    middlewares(){
-        //CORS
-        this.app.use( cors());
-
-        //Lectura y parseo del body
-        this.app.use( express.json());
-
-        //Contenido estatico
-        this.app.use( express.static('public'));
-
-    }
 }
 
 module.exports = Server;

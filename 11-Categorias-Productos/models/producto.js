@@ -21,7 +21,8 @@ const ProductoSchema = new Schema({
         required: true
     },
     description: {type: String, default: ""},
-    disponible: {type: Boolean, default:true}
+    disponible: {type: Boolean, default:true},
+    img: {tyoe: String}
 });
 
 ProductoSchema.methods.toJSON = function() {

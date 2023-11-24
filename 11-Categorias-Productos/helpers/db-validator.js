@@ -40,12 +40,25 @@ const ProductoValidator = async (id) => {
     }
 }
 
+const coleccionesPermitidas = (coleccion = '',colecciones = []) => {
+    const incluida = colecciones.includes(coleccion);
+
+    if(!incluida){
+         throw new Error({
+            msg:`La colección ${coleccion} no esta permitida - ${colecciones}`
+         })
+    };
+
+    return true;
+}
+
 
 module.exports = {
     RoleValidator,
     EmailValidator,
     UserIdValidator,
     CategoriaValidator,
-    ProductoValidator
+    ProductoValidator,
+    coleccionesPermitidas
 
 }
